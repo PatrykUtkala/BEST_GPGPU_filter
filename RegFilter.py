@@ -11,7 +11,7 @@ class RegFilter:
 
     def check_phrase(self, phrase: str):
         changed_phrase = phrase.lower()
-        changed_phrase = re.sub(re.compile('\s|\W[^@]]'), '_', changed_phrase)
+        changed_phrase = re.sub(re.compile('\s|[^@\w]'), '_', changed_phrase)
         changed_phrase = re.sub(self.reg, self.star_counter, changed_phrase)
         new_phrase = ''
         for i, l in enumerate(changed_phrase):
