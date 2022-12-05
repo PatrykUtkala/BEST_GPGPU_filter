@@ -1,11 +1,11 @@
 import re
 from trieregex import TrieRegEx as TRE
 from wulgaryzmy import wulgaryzmy
-words = wulgaryzmy
-replace_dict = {'i': '1l', 'e': '3', 'w': 'v', 'a': '4', 'o': '0', 'u': 'v', 'l': 'i'}
 
 
 class RegFilter:
+    replace_dict = {'i': '1l', 'e': '3', 'w': 'v', 'a': '4', 'o': '0', 'u': 'v', 'l': 'i'}
+
     def __init__(self):
         self.reg = None
 
@@ -32,17 +32,13 @@ class RegFilter:
         self.reg = re.compile(reg)
         return self
 
-    def bake_regex(self):
+    def bake_regex(self, words):
         words_extended = self._words_super_extender(words)
-        # print(words_extended)
         reg = "|".join(words_extended)
-        # print(reg)
         regexed_words = reg.split('|')
         tre = TRE(*regexed_words)
         reg = tre.regex()
-        # print(reg)
         reg = self._add_empty(reg)
-        # print(reg)
         reg = self._replace_letters(reg)
 
         print(reg)
@@ -52,9 +48,8 @@ class RegFilter:
         return self
 
     def _replace_letters(self, reg):
-        for key in list(replace_dict.keys()):
-            reg = re.sub(re.compile(key + '(?!(?!\[)(?:.(?!\[))*\])'), '['+key+replace_dict[key]+']', reg)
-            # reg = reg.replace(key, '['+key+replace_dict[key]+']')
+        for key in list(self.replace_dict.keys()):
+            reg = re.sub(re.compile(key + '(?!(?!\[)(?:.(?!\[))*\])'), '['+key+self.replace_dict[key]+']', reg)
         return reg
 
     def _add_empty(self, reg):
@@ -84,8 +79,8 @@ class RegFilter:
 
 
 if __name__ == '__main__':
-    my_filter = RegFilter().bake_regex()
-    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip4, spierdaia'
+    my_filter = RegFilter().bake_regex(wulgaryzmy)
+    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip4, spierdaia, jebal'
 #     phrase = '''W dobie internetu coraz częściej spotykamy się z filtrowaniem komentarzy czy czatu pod
 # kątem treści obraźliwych. W przypadku wielu stron wynika to z konieczności utrzymania
 # odpowiedniego poziomu kultury, ze względu na wymagania reklamodawców, którzy nie
