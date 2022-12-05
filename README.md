@@ -6,13 +6,14 @@ Filtr obsługuje klasa RegFilter. Po zainicjalizowaniu obiektu
 należy wywołać metodę bake_regex z parametrem listy wulgaryzmów.
 Gdy istnieje już plik baked.txt filtr można ładować metodą load_regex.
 Do analizy frazy służy metoda check_phrase
-'''python
+```python
+# przykład użycia filtra
 if __name__ == '__main__':
     my_filter = RegFilter().bake_regex(wulgaryzmy)
     phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip@, spierdaia, jebal'
     print(phrase)
     print(my_filter.check_phrase(phrase))
-'''
+```
 
 ### Opis rozwiązania
 W naszym rozwiązaniu zastosowaliśmy wyrażenia regularne 
