@@ -1,10 +1,8 @@
 import re
 from trieregex import TrieRegEx as TRE
 from wulgaryzmy import wulgaryzmy
-import warnings
-warnings.filterwarnings("ignore")
 words = wulgaryzmy
-replace_dict = {'i': '1L', 'e': '3', 'w': 'v', 'a': '@4', 'o': '0', 'u': 'v'}
+replace_dict = {'i': '1l', 'e': '3', 'w': 'v', 'a': '4', 'o': '0', 'u': 'v', 'l': 'i'}
 
 
 class RegFilter:
@@ -55,11 +53,12 @@ class RegFilter:
 
     def _replace_letters(self, reg):
         for key in list(replace_dict.keys()):
-            reg = reg.replace(key, '['+key+replace_dict[key]+']')
+            reg = re.sub(re.compile(key + '(?!(?:.(?!\[))*\])'), '['+key+replace_dict[key]+']', reg)
+            # reg = reg.replace(key, '['+key+replace_dict[key]+']')
         return reg
 
     def _add_empty(self, reg):
-        reg = re.sub(re.compile('\w(?!\|)'), self._extend_char, reg)
+        reg = re.sub(re.compile('\w(?!(\|)|(\]))'), self._extend_char, reg)
         return reg
 
     def _extend_char(self, match_obj: re.Match):
@@ -85,8 +84,8 @@ class RegFilter:
 
 
 if __name__ == '__main__':
-    my_filter = RegFilter().load_regex()
-    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem'
+    my_filter = RegFilter().bake_regex()
+    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip4, spierdaia'
 #     phrase = '''W dobie internetu coraz częściej spotykamy się z filtrowaniem komentarzy czy czatu pod
 # kątem treści obraźliwych. W przypadku wielu stron wynika to z konieczności utrzymania
 # odpowiedniego poziomu kultury, ze względu na wymagania reklamodawców, którzy nie
