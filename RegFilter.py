@@ -12,13 +12,13 @@ class RegFilter:
         self.reg = None
 
     def check_phrase(self, phrase: str):
-        changed_phrase = re.sub(re.compile('\s|\W'), '_', phrase)
+        changed_phrase = phrase.lower()
+        changed_phrase = re.sub(re.compile('\s|\W'), '_', changed_phrase)
         changed_phrase = re.sub(self.reg, self.star_counter, changed_phrase)
+        new_phrase = ''
         for i, l in enumerate(changed_phrase):
-            if l == "_":
-                changed_phrase = changed_phrase[:i] + phrase[i] + changed_phrase[i+1:]
-        changed_phrase = changed_phrase.replace('_', ' ')
-        return changed_phrase
+            new_phrase += phrase[i] if changed_phrase[i] != '*' else '*'
+        return new_phrase
 
     def star_counter(self, match_obj: re.Match):
         kek = match_obj.span()
@@ -86,7 +86,7 @@ class RegFilter:
 
 if __name__ == '__main__':
     my_filter = RegFilter().load_regex()
-    phrase = 'Twoja stara to chuj i zaje#b1ści3, cchuuuj, kurwi#ska, cuhj, kurvviszonem'
+    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem'
 #     phrase = '''W dobie internetu coraz częściej spotykamy się z filtrowaniem komentarzy czy czatu pod
 # kątem treści obraźliwych. W przypadku wielu stron wynika to z konieczności utrzymania
 # odpowiedniego poziomu kultury, ze względu na wymagania reklamodawców, którzy nie
