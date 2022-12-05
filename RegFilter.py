@@ -53,7 +53,7 @@ class RegFilter:
 
     def _replace_letters(self, reg):
         for key in list(replace_dict.keys()):
-            reg = re.sub(re.compile(key + '(?!(?:.(?!\[))*\])'), '['+key+replace_dict[key]+']', reg)
+            reg = re.sub(re.compile(key + '(?!(?!\[)(?:.(?!\[))*\])'), '['+key+replace_dict[key]+']', reg)
             # reg = reg.replace(key, '['+key+replace_dict[key]+']')
         return reg
 
