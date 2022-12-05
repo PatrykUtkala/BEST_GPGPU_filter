@@ -4,14 +4,14 @@ from wulgaryzmy import wulgaryzmy
 
 
 class RegFilter:
-    replace_dict = {'i': '1l', 'e': '3', 'w': 'v', 'a': '4', 'o': '0', 'u': 'v', 'l': 'i'}
+    replace_dict = {'i': '1l', 'e': '3', 'w': 'v', 'a': '@4', 'o': '0', 'u': 'v', 'l': 'i'}
 
     def __init__(self):
         self.reg = None
 
     def check_phrase(self, phrase: str):
         changed_phrase = phrase.lower()
-        changed_phrase = re.sub(re.compile('\s|\W'), '_', changed_phrase)
+        changed_phrase = re.sub(re.compile('\s|\W[^@]]'), '_', changed_phrase)
         changed_phrase = re.sub(self.reg, self.star_counter, changed_phrase)
         new_phrase = ''
         for i, l in enumerate(changed_phrase):
@@ -80,18 +80,6 @@ class RegFilter:
 
 if __name__ == '__main__':
     my_filter = RegFilter().bake_regex(wulgaryzmy)
-    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip4, spierdaia, jebal'
-#     phrase = '''W dobie internetu coraz częściej spotykamy się z filtrowaniem komentarzy czy czatu pod
-# kątem treści obraźliwych. W przypadku wielu stron wynika to z konieczności utrzymania
-# odpowiedniego poziomu kultury, ze względu na wymagania reklamodawców, którzy nie
-# chcą, by ich marka była kojarzona z “nieodpowiednimi środowiskami”. Mimo to, używane
-# obecnie filtry wciąż nie działają perfekcyjnie - ich twórcy, chcąc ograniczyć ilość przypadków
-# “false positive”, często poprzestają na ograniczonych rozwiązaniach. Ponadto, sprawy nie
-# ułatwiają użytkownicy internetu, którzy chcąc obejść cenzurę, korzystają ze sztuczek takich
-# jak zastępowanie w słowach niektórych liter podobnie wyglądającymi znakami, czy pisaniem
-# w nie do końca poprawnie gramatyczny sposób. W wyniku tego problem usuwania treści
-# obraźliwych, początkowo trywialny, staje się znacznie trudniejszy (przykładowo,
-# wprowadzony jakiś czas temu filtr czatu w jednej z popularnych gier, nie pozwalał na użycie
-# słowa night z powodu rzekomego podobieństwa do pewnego bardzo nieładnego słowa).'''
+    phrase = 'Twoja stara to chuj i zaje#b1śCi3, cchuuuj, kurwi#ska, cuhj, kurvviszonem, cip@, spierdaia, jebal'
     print(phrase)
     print(my_filter.check_phrase(phrase))
